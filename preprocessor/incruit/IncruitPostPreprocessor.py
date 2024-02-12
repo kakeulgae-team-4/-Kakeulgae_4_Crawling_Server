@@ -76,21 +76,3 @@ class IncruitPostPreprocessor:
                 print(type(create_date))
                 post.created_at = create_date - timedelta(days=int(posted_date[0]))
             self.posts.append(post)
-
-
-if __name__ == '__main__':
-    from domain.post.PostBuilder import PostBuilder
-    from ParamPrinter import ParamPrinter
-
-    builder = PostBuilder()
-    item = (builder.company_name("충북개발공사").
-            post_name("2024년 정규직(신입/경력) 채용 공고").
-            career("신입/경력(연차무관)").
-            education("박사 이상").
-            location("충북 청주시").
-            job_type("정규직").
-            deadline("~02.08 (목)").
-            url("https://job.incruit.com/jobdb_info/jobpost.asp?job=2401290004100").
-            created_at("(3일전 등록)").build())
-    preprocessor = IncruitPostPreprocessor(item)
-    preprocessor.process()

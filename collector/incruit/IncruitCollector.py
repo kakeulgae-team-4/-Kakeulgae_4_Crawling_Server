@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from Collector import Collector
+from collector.Collector import Collector
 from WebDriver import WebDriver
 from domain.post.PostBuilder import PostBuilder
 from collections import defaultdict

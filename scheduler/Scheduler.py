@@ -3,9 +3,12 @@ import schedule
 
 
 class Scheduler(schedule.Scheduler):
-    def add_job(self, interval_seconds, job_function):
-        job = schedule.every(interval_seconds).seconds.do(job_function)
+    def add_job_with_seconds(self, interval_seconds, job_function, *args):
+        job = schedule.every(interval_seconds).seconds.do(job_function, *args)
         self.jobs.append(job)
+
+    def add_job_with_minutes(self, interval_minutes, job_function):
+        job = schedule.every(interval_minutes).minutes.do(job_function)
 
     def run(self):
         while True:
@@ -13,23 +16,3 @@ class Scheduler(schedule.Scheduler):
             time.sleep(1)
 
 
-if __name__ == '__main__':
-    scheduler = Scheduler()
-    def f():
-        print('hi')
-
-    class Test:
-        @staticmethod
-        def hi():
-            time.sleep(1)
-            print('this is from class')
-
-        def hi2(self):
-            time.sleep(1)
-            print('this is instance')
-
-    test = Test()
-    scheduler.add_job(3, f)
-    scheduler.add_job(5, Test.hi)
-    scheduler.add_job(7, test.hi2)
-    scheduler.run()
