@@ -18,8 +18,4 @@ class StrategyManager:
         self.strategy = self.strategies[self.strategy_idx]
 
     def execute(self):
-        """
-        posts 반환
-        :return:
-        """
         return self.strategy.find_posts()
