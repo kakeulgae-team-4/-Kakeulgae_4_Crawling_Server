@@ -5,6 +5,13 @@ from domain.post.PostBuilder import PostBuilder
 from collections import defaultdict
 import json
 
+from logger.stream_logger import StreamLogger
+from logger.file_logger import FileLogger
+from ParamPrinter import ParamPrinter
+
+
+log = StreamLogger()
+
 
 class IncruitCollector(Collector):
     def __init__(self):
@@ -31,6 +38,23 @@ class IncruitCollector(Collector):
         for key, value in self.params.items():
             param_list.append(key + '=' + self.params[key])
         self.url = self.base_url + '&'.join(param_list)
+
+    def save_all_posts(self):
+        while int(self.params['page']) <= 2:
+            log.log(self.url)
+            self.set_source_page()
+            self.find_posts()
+            for post in self.posts:
+                ParamPrinter.log_class_param(log, post, self.params['page'])
+            self.posts = []
+            self.find_next_page()
+
+    def next_page_exists(self):
+        soup = BeautifulSoup(self.source_page, 'html.parser')
+        next_button = soup.find('a', {'class': 'next_n'})
+        if next_button:
+            return True
+        return False
 
     def find_posts(self, **kwargs):
         builder = PostBuilder()
@@ -86,8 +110,12 @@ class IncruitCollector(Collector):
     def find_next_page(self):
         self.params['page'] = str(int(self.params['page']) + 1)
         self.make_query_parameter()
-        self.set_source_page()
 
     def set_source_page(self):
         self.webdriver.open_url(self.url)
         self.source_page = self.webdriver.get_page_source()
+
+
+if __name__ == '__main__':
+    strategy = IncruitCollector()
+    strategy.save_all_posts()

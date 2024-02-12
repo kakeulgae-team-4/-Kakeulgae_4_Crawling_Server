@@ -4,7 +4,7 @@ import logging
 class StreamLogger:
     logger = logging.getLogger(name='stream_logger')
     logger.setLevel(logging.INFO)
-    formatter = logging.Formatter('|%(asctime)s||%(name)s||%(levelname)s|\n%(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+    formatter = logging.Formatter('|%(asctime)s||%(name)s||%(levelname)s|%(message)s', datefmt='%Y-%m-%d %H:%M:%S')
     stream_handler = logging.StreamHandler()
     stream_handler.setFormatter(formatter)
     logger.addHandler(stream_handler)

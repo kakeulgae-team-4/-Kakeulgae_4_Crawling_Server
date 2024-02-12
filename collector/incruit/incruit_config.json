@@ -1,8 +1,8 @@
 {
   "base_url": "https://job.incruit.com/jobdb_list/searchjob.asp?",
-  "rgn1": "149",
-  "sortedfield": "reg",
-  "sortedorder": "1",
-  "page": "0",
+  "occ1": "150",
+  "sortfield": "mod",
+  "sortorder": "1",
+  "page": "1",
   "url": ""
 }
