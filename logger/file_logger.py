@@ -2,10 +2,9 @@ import logging
 
 
 class FileLogger:
-    logger = logging.getLogger(name='stream_logger')
+    logger = logging.getLogger(name='file_logger')
     logger.setLevel(logging.INFO)
-    formatter = logging.Formatter('|%(asctime)s||%(name)s||%(levelname)s||%(message)s', datefmt='%Y-%m-%d %H:%M:%S')
-
+    formatter = logging.Formatter('%(asctime)s|%(name)s|%(levelname)s|%(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
     @staticmethod
     def setLevel(level: str):
@@ -27,11 +26,10 @@ class FileLogger:
             FileLogger.logger.setLevel(logging.NOTSET)
 
     @staticmethod
-    def setPath(filePath: str='incruit/log.txt'):
+    def setPath(filePath: str = 'incruit/log.txt'):
         file_handler = logging.FileHandler(filePath, mode='a', encoding='utf')
         file_handler.setFormatter(FileLogger.formatter)
         FileLogger.logger.addHandler(file_handler)
-
 
     @staticmethod
     def log(message: str):
