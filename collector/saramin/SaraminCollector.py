@@ -57,14 +57,18 @@ class SaraminCollector(Collector):
         jobs = soup.find_all('div', {'class': 'list_item'})
 
         for job in jobs:
+            if not job.find('div', {'class': 'box_item'}):
+                # box_item이 없으면 다음 job으로 넘어감.
+                continue
+
             builder = PostBuilder()  # PostBuilder 인스턴스 생성
-            company_name_tag = job.find('div', {'class': 'col company_nm'})
-            if not company_name_tag:
-                company_name_tag
-            else:
-                company_name = company_name_tag.a.text.strip()
+            # company_name= job.find('div', {'class': 'col company_nm'}).find(class_='str_tit')
+            company_name = job.find('div', {'class': 'col company_nm'}).find(class_='str_tit').text.strip()
+
+            log.log(company_name)
 
             post_name = job.find('div', {'class': 'job_tit'}).a.text.strip()
+
             post_url = "https://www.saramin.co.kr" + job.find('div', {'class': 'job_tit'}).a['href']
 
             # 근무지 추출
