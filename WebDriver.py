@@ -88,6 +88,7 @@ class WebDriver:
         search_button.click()
         self.body = self.driver.find_element(By.TAG_NAME, 'body')
 
+
     def init_order_select(self):
         self.body.send_keys(Keys.END)
         time.sleep(2)
@@ -97,9 +98,13 @@ class WebDriver:
             optional_xpath = '/html/body/div[5]/div[1]/div/div[2]/div[4]/div/div[2]/div[5]/div[2]/div[1]/select/option[2]'
             self.wait_button_and_click(xpath)
             self.wait_button_and_click(optional_xpath)
+            self.page_source = self.driver.page_source
         except Exception as e:
             print("특정 엘리먼트가 발견되지 않았습니다. 스크롤을 내리면서 기다리겠습니다.")
 
+
     def get_page_nums(self):
+        pass
 
     def page_num_exists(self):
+        pass

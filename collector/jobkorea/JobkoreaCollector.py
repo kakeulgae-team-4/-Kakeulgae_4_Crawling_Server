@@ -8,6 +8,7 @@ class JobkoreaCollector(Collector):
         self.source_page = None
         url = "https://www.jobkorea.co.kr/recruit/joblist?menucode=local&localorder=1#anchorGICnt_1"
         self.driver = WebDriver(False, False)
+        # self.driver = WebDriver()
         self.driver.open_url(url)
 
         # 버튼 요소 선택
@@ -29,11 +30,13 @@ class JobkoreaCollector(Collector):
         pass
 
     def find_next_page(self):
-        pass
+        self.set_source_page()
+        soup = BeautifulSoup(self.source_page, 'html.parser')
 
     def set_source_page(self):
-        self.source_page = self.driver.page_source()
+        self.source_page = self.driver.get_page_source()
 
 
 if __name__ == '__main__':
     strategy = JobkoreaCollector()
+    strategy.find_next_page()
