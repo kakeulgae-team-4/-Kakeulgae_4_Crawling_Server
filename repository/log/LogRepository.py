@@ -14,3 +14,7 @@ class LogRepository:
         with open(LogRepository.path, 'r') as log_file:
             logs = log_file.readlines()
         return logs[-1].split('|')[-1]
+
+
+if __name__ == '__main__':
+    print(LogRepository.get_last_log())

@@ -8,6 +8,7 @@ import csv
 class MemoryPostRepository(PostRepository):
     idx = 0
     csv_path = "/Users/koo/Desktop/git/job-webset-crawling/src/resources/incruit/result.csv"
+    log_path = "/Users/koo/PycharmProjects/scraping_server/logger/incruit/log.txt"
 
     @staticmethod
     def save(data: Post, **kwargs):
