@@ -10,7 +10,7 @@ from logger.file_logger import FileLogger
 from ParamPrinter import ParamPrinter
 
 
-log = StreamLogger()
+log = FileLogger()
 
 
 class IncruitCollector(Collector):
