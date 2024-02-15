@@ -11,6 +11,7 @@ from ParamPrinter import ParamPrinter
 
 log = StreamLogger()
 
+
 class SaraminCollector(Collector):
     def __init__(self):
         # 초기화 메서드에서는 여러 변수를 초기화합니다.
@@ -108,13 +109,11 @@ class SaraminCollector(Collector):
         self.make_query_parameter()
         self.set_source_page()
 
-
-
-
     def set_source_page(self):
         # WebDriver를 사용해 현재 설정된 URL의 페이지를 로드하고 HTML 소스를 가져옴
         self.webdriver.open_url(self.url)
         self.source_page = self.webdriver.get_page_source()
+
 
 if __name__ == '__main__':
     strategy = SaraminCollector()
