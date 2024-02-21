@@ -1,6 +1,7 @@
 from domain.post.Post import Post
 from copy import deepcopy
 
+
 class PostBuilder:
     def __init__(self):
         """
@@ -39,7 +40,7 @@ class PostBuilder:
         self.__post.location = location
         return self
 
-    def job_type(self, job_type):
+    def work_type(self, job_type):
         self.__post.job_type = job_type
         return self
 

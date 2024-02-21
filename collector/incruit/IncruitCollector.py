@@ -100,7 +100,7 @@ class IncruitCollector(Collector):
                      career(career).
                      education(education).
                      location(location).
-                     job_type(job_type).
+                     work_type(job_type).
                      url(url).
                      deadline(deadline).
                      created_at(created_at).

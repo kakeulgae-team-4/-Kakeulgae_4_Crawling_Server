@@ -100,7 +100,7 @@ class SaraminCollector(Collector):
 
             # builder를 사용하여 Post 객체 설정 및 생성
             post = builder.company_name(company_name).post_name(post_name).career(career).education(education).location(
-                work_place).job_type(job_type).url(post_url).deadline(deadline).created_at(created_at).build()
+                work_place).work_type(job_type).url(post_url).deadline(deadline).created_at(created_at).build()
 
             self.posts.append(post)
 

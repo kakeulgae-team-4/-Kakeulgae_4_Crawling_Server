@@ -16,9 +16,9 @@ class Post(db.Model):
     __tablename__ = 'post'
     id = db.Column(db.Integer, primary_key=True)
     # 회사명
-    company_name = db.Column(db.String(20))
+    company_name = db.Column(db.String(20), nullable=False)
     # 공고명
-    post_name = db.Column(db.String(255))
+    post_name = db.Column(db.String(255), nullable=False)
     # 경력명
     career_id = db.Column(db.Integer, db.ForeignKey('career.id'))
     # 교육수준명

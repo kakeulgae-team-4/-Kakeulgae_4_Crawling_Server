@@ -11,7 +11,7 @@ class IncruitPreprocessorTest(unittest.TestCase):
                      career("신입/경력(연차무관)").
                      education("박사 이상").
                      location("충북 청주시").
-                     job_type("정규직").
+                     work_type("정규직").
                      deadline("~02.08 (목)").
                      url("https://job.incruit.com/jobdb_info/jobpost.asp?job=2401290004100").
                      created_at("(3일전 등록)").build())
