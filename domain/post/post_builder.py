@@ -1,4 +1,4 @@
-from domain.post.Post import Post
+from domain.post.post import Post
 from copy import deepcopy
 
 
