@@ -1,10 +1,7 @@
-import time
-
 from selenium.webdriver.common.by import By
 
-from collector.Collector import Collector
+from strategy.Collector import Collector
 from WebDriver import WebDriver
-from bs4 import BeautifulSoup
 
 url = "https://www.jobkorea.co.kr/recruit/joblist?menucode=local&localorder=1#anchorGICnt_1"
 major_button_xpath = '/html/body/div[5]/div[1]/div/div[2]/div[1]/div[2]/div/div[1]/dl[1]/dt/p'

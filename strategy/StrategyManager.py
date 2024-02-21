@@ -1,4 +1,4 @@
-from incruit.IncruitCollector import IncruitCollector
+from strategy.incruit.IncruitCollector import IncruitCollector
 
 
 class StrategyManager:

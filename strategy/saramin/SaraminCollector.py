@@ -1,12 +1,11 @@
 from bs4 import BeautifulSoup
-from collector.Collector import Collector
+from strategy.Collector import Collector
 from WebDriver import WebDriver
 from domain.post.PostBuilder import PostBuilder
 from collections import defaultdict
 import json
 
 from logger.stream_logger import StreamLogger
-from logger.file_logger import FileLogger
 from ParamPrinter import ParamPrinter
 
 log = StreamLogger()

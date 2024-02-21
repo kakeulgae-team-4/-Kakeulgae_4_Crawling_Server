@@ -1,5 +1,5 @@
 from domain.post.PostBuilder import PostBuilder
-from preprocessor.incruit.IncruitPostPreprocessor import IncruitPostPreprocessor
+from strategy.incruit.IncruitPostPreprocessor import IncruitPostPreprocessor
 import unittest
 
 
