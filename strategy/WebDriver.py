@@ -14,7 +14,7 @@ class WebDriver:
     파싱은 하지 않음
     """
 
-    def __init__(self, headless: bool = True, no_sandbox: bool = True):
+    def __init__(self, headless: bool = False, no_sandbox: bool = True):
         self.body = None
         self.page_source = None
         chrome_options = Options()
@@ -22,6 +22,11 @@ class WebDriver:
             chrome_options.add_argument('--headless')
         if no_sandbox:
             chrome_options.add_argument('--no-sandbox')
+
+        # 여기에 User-Agent를 설정합니다. 사람인 IP차단 방지
+        user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36'
+        chrome_options.add_argument(f'user-agent={user_agent}')
+
         chrome_options.add_experimental_option('detach', True)
         chrome_options.add_experimental_option("excludeSwitches", ["enable-logging"])
 
