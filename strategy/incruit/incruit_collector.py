@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
-from strategy.Collector import Collector
-from WebDriver import WebDriver
+from strategy.collector import Collector
+from web_driver import WebDriver
 from domain.post.post_builder import PostBuilder
 from collections import defaultdict
 import json
