@@ -1,15 +1,15 @@
 from bs4 import BeautifulSoup
-from collector.Collector import Collector
+from strategy.Collector import Collector
 from WebDriver import WebDriver
-from domain.post.PostBuilder import PostBuilder
+from domain.post.post_builder import PostBuilder
 from collections import defaultdict
 import json
 
 from logger.stream_logger import StreamLogger
-from logger.file_logger import FileLogger
-from ParamPrinter import ParamPrinter
+from param_printer import ParamPrinter
 
 log = StreamLogger()
+
 
 class SaraminCollector(Collector):
     def __init__(self):
@@ -99,7 +99,7 @@ class SaraminCollector(Collector):
 
             # builder를 사용하여 Post 객체 설정 및 생성
             post = builder.company_name(company_name).post_name(post_name).career(career).education(education).location(
-                work_place).job_type(job_type).url(post_url).deadline(deadline).created_at(created_at).build()
+                work_place).work_type(job_type).url(post_url).deadline(deadline).created_at(created_at).build()
 
             self.posts.append(post)
 
@@ -108,13 +108,11 @@ class SaraminCollector(Collector):
         self.make_query_parameter()
         self.set_source_page()
 
-
-
-
     def set_source_page(self):
         # WebDriver를 사용해 현재 설정된 URL의 페이지를 로드하고 HTML 소스를 가져옴
         self.webdriver.open_url(self.url)
         self.source_page = self.webdriver.get_page_source()
+
 
 if __name__ == '__main__':
     strategy = SaraminCollector()

@@ -1,13 +1,12 @@
 from bs4 import BeautifulSoup
-from collector.Collector import Collector
+from strategy.Collector import Collector
 from WebDriver import WebDriver
-from domain.post.PostBuilder import PostBuilder
+from domain.post.post_builder import PostBuilder
 from collections import defaultdict
 import json
 
-from logger.stream_logger import StreamLogger
 from logger.file_logger import FileLogger
-from ParamPrinter import ParamPrinter
+from param_printer import ParamPrinter
 
 
 log = FileLogger()
@@ -100,7 +99,7 @@ class IncruitCollector(Collector):
                      career(career).
                      education(education).
                      location(location).
-                     job_type(job_type).
+                     work_type(job_type).
                      url(url).
                      deadline(deadline).
                      created_at(created_at).
