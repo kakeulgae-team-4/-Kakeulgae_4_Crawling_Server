@@ -49,33 +49,4 @@ class WebDriver:
                 file.write(line)
         print('page source saved')
 
-    def get_elements_by_xpath(self, xpath: str):
-        return self.driver.find_elements(By.XPATH, xpath)
 
-    def get_elements_by_class(self, _class: str):
-        return self.driver.find_elements(By.CLASS_NAME, _class)
-
-    def get_element_by_class(self, _class: str):
-        return self.driver.find_element(By.CLASS_NAME, _class)
-
-    def get_elements_by_name(self, _class: str):
-        return self.driver.find_elements(By.NAME, _class)
-
-    def get_element_by_name(self, _class: str):
-        return self.driver.find_element(By.NAME, _class)
-
-    def get_page_nums(self):
-        pass
-
-    def page_num_exists(self):
-        pass
-
-    def wait_button(self, by, element: str, sub_title: str):
-        elem = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((by, element)))
-        elems = elem.text.split('\n')
-        with open('/jobkorea/job_korea_job.csv', 'a') as file:
-            for elem in elems:
-                sub_title = re.sub(r'\((\d{1,3},?\d{1,3})*\)', '', sub_title)
-                elem = re.sub(r'\((\d{1,3},?\d{1,3})*\)', '', elem)
-                file.write(sub_title + ',' + elem)
-                file.write('\n')

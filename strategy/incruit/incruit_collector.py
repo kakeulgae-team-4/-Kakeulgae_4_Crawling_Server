@@ -3,11 +3,10 @@ from strategy.collector import Collector
 from web_driver import WebDriver
 from domain.post.post_builder import PostBuilder
 from collections import defaultdict
-import json
 
 from logger.file_logger import FileLogger
 from param_printer import ParamPrinter
-
+from strategy.incruit.incruit_config import parameter_config as config
 
 log = FileLogger()
 
@@ -23,13 +22,11 @@ class IncruitCollector(Collector):
         self.init_params()
 
     def init_params(self):
-        with open("incruit_config.json") as config_file:
-            configs = json.load(config_file)
-            self.base_url = configs['base_url']
-            for key, value in configs.items():
-                if not key.startswith('url') and not key.endswith('url'):
-                    self.params[key] = value
-            self.make_query_parameter()
+        self.base_url = config['base_url']
+        for key, value in config.items():
+            if 'url' not in key:
+                self.params[key] = value
+        self.make_query_parameter()
         self.set_source_page()
 
     def make_query_parameter(self):
