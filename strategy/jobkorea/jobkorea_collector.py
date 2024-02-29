@@ -1,7 +1,6 @@
 from collector import Collector
 from jobkorea.jobkorea_web_driver import WebDriver
 from bs4 import BeautifulSoup
-import time
 
 from job_korea_config import path_repository as xpath
 from job_korea_config import url_repository as url
@@ -33,8 +32,3 @@ class JobkoreaCollector(Collector):
 
     def set_source_page(self):
         self.source_page = self.driver.get_page_source()
-
-
-if __name__ == '__main__':
-    strategy = JobkoreaCollector()
-    strategy.find_next_page()

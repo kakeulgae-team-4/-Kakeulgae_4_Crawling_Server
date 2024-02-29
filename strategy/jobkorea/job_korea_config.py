@@ -2,6 +2,7 @@ url_repository = {
     'base': 'https://www.jobkorea.co.kr/recruit/joblist?menucode=local&localorder=1#anchorGICnt_1',
 }
 path_repository = {
+    'body': '/html/body',
     'major_button': '/html/body/div[5]/div[1]/div/div[2]/div[1]/div[2]/div/div[1]/dl[1]/dt/p',
     'middle_button': '/html/body/div[5]/div[1]/div/div[2]/div[1]/div[2]/div/div[1]/dl[1]/dd[2]/div[2]/dl[1]/dd/div[1]/ul/li[6]/label/span',
     'sub_button': '/html/body/div[5]/div[1]/div/div[2]/div[1]/div[2]/div/div[1]/dl[1]/dd[2]/div[2]/dl[2]/dd/div[1]/ul[2]/li[1]/label/span',

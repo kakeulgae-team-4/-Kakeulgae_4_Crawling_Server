@@ -1,25 +1,23 @@
 from selenium.webdriver.common.by import By
 
 from strategy.collector import Collector
-from web_driver import WebDriver
-
-url = "https://www.jobkorea.co.kr/recruit/joblist?menucode=local&localorder=1#anchorGICnt_1"
-major_button_xpath = '/html/body/div[5]/div[1]/div/div[2]/div[1]/div[2]/div/div[1]/dl[1]/dt/p'
-middle_button_xpath = '/html/body/div[5]/div[1]/div/div[2]/div[1]/div[2]/div/div[1]/dl[1]/dd[2]/div[2]/dl[1]/dd/div[1]/ul/li[6]/label/span'
+from strategy.jobkorea.jobkorea_web_driver import JobkoreaWebDriver
+from strategy.jobkorea.job_korea_config import url_repository as url
+from strategy.jobkorea.job_korea_config import path_repository as xpath
 
 
 class JobkoreaCollector(Collector):
     def __init__(self):
         self.source_page = None
-        self.driver = WebDriver()
-        self.driver.open_url(url)
+        self.driver = JobkoreaWebDriver()
+        self.driver.open_url(url['base'])
 
         # 버튼 요소 선택
-        self.driver.wait_button_and_click(By.XPATH, major_button_xpath)
+        self.driver.wait_and_click_xpath(xpath['major_button'])
         print()
 
         # 두 번째 버튼 요소 선택
-        self.driver.wait_button_and_click(By.XPATH, middle_button_xpath)
+        self.driver.wait_and_click_xpath(xpath['middle_button'])
         print()
 
         sub_title_idx = 229
@@ -30,21 +28,8 @@ class JobkoreaCollector(Collector):
             self.driver.wait_button(By.XPATH, sub_path, sub_title)
             sub_title_idx += 1
 
-    def __del__(self):
-        # self.driver.driver.quit()
-        pass
-
-    def find_posts(self, source_page: str):
-        pass
-
-    def find_next_page(self):
-        self.set_source_page()
-
     def set_source_page(self):
         self.source_page = self.driver.get_page_source()
-
-    def get_sub_title(self):
-        pass
 
 
 if __name__ == '__main__':
