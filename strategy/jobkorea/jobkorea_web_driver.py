@@ -9,6 +9,13 @@ from selenium.webdriver.support import expected_conditions as EC
 from job_korea_config import path_repository as xpath
 
 
+def get_path(path: str, *args):
+    if len(args) == 1:
+        return xpath['row'][path].format(idx=str(args[0]))
+    elif len(args) == 2:
+        return xpath['row'][path].format(idx=str(args[0]), span_idx=str(args[1]))
+
+
 class JobkoreaWebDriver(WebDriver):
     def __init__(self):
         super(JobkoreaWebDriver, self).__init__()
@@ -18,16 +25,13 @@ class JobkoreaWebDriver(WebDriver):
         button.click()
         return button.text
 
-    def wait_and_click_xpath(self, element: str):
-        button = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH, element)))
+    def wait_and_click_xpath(self, path: str):
+        button = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH, path)))
         button.click()
         return button.text
 
-    def get_row_element(self, path: str, *args):
-        if len(args) == 1:
-            return xpath['row'][path].format(idx=str(args[0]))
-        elif len(args) == 2:
-            return xpath['row'][path].format(idx=str(args[0]), span_idx=str(args[1]))
+    def find_by_xpath(self, path: str):
+        return self.driver.find_element(By.XPATH, path)
 
     def init_order_select(self):
         self.body.send_keys(Keys.END)
@@ -61,44 +65,41 @@ class JobkoreaWebDriver(WebDriver):
 
         while True:
             try:
-                for tr_index in range(1, 51):  # tr[1]부터 tr[50]까지
+                for row_idx in range(1, 51):  # tr[1]부터 tr[50]까지
                     try:
                         # tr[현재 행 + 1]이 화면에 보이지 않으면 스크롤을 내리고 기다린다.
-                        WebDriverWait(self.driver, 10).until(
-                            EC.presence_of_element_located((By.XPATH, self.get_row_element('one', tr_index))))
+                        self.wait_and_click_xpath(get_path('one', row_idx))
 
                         # company name
-                        company_name = self.driver.find_element(By.XPATH, self.get_row_element('company_name', tr_index)).text
+                        company_name = self.find_by_xpath(get_path('company_name', row_idx)).text
 
                         # post name
-                        post_name = self.driver.find_element(By.XPATH, self.get_row_element('post_name', tr_index)).text
+                        post_name = self.find_by_xpath(get_path('post_name', row_idx)).text
 
                         # url
-                        url = self.driver.find_element(By.XPATH, self.get_row_element('url', tr_index)).get_attribute(
-                            'href')
+                        url = self.find_by_xpath(get_path('url', row_idx)).get_attribute('href')
 
                         # span 요소 수만큼 반복
                         span_texts = []  # span 요소들을 저장할 리스트
                         span_index = 1
                         while True:
                             try:
-                                span_element = self.driver.find_element(By.XPATH, self.get_row_element('tag', tr_index, span_index)).text
+                                span_element = self.find_by_xpath(get_path('tag', row_idx, span_index)).text
                                 span_texts.append(span_element)  # 각 span 요소를 리스트에 추가
                                 span_index += 1
                             except:
-                                # span 요소가 없으면 반복문 종료
                                 break
 
                         # work type
-                        work_type = self.driver.find_element(By.XPATH, self.get_row_element('work_type', tr_index)).text
+                        work_type = self.find_by_xpath(get_path('work_type', row_idx)).text
 
                         # created at
-                        created_at = self.driver.find_element(By.XPATH, self.get_row_element('created_at', tr_index)).text
+                        created_at = self.find_by_xpath(get_path('created_at', row_idx)).text
 
                         # deadline
-                        deadline = self.driver.find_element(By.XPATH, self.get_row_element('deadline', tr_index)).text
+                        deadline = self.find_by_xpath(get_path('deadline', row_idx)).text
                     except Exception as e:
-                        print(f"텍스트 {tr_index}를 가져오는데 실패했습니다.")
+                        print(f"텍스트 {row_idx}를 가져오는데 실패했습니다.")
 
                 # 페이지 버튼 클릭
                 page_button_xpath = xpath['page_button_pattern'].format(page_button_number)
@@ -115,13 +116,13 @@ class JobkoreaWebDriver(WebDriver):
                 if page_next_button_number == 11:
                     self.driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.END)
                     time.sleep(0.5)
-                    page_next_button = self.driver.find_element(By.XPATH, xpath['page_next_button'])
+                    page_next_button = self.find_by_xpath(xpath['page_next_button'])
                     page_next_button.click()
                     page_next_button_number += 1
                 if page_next_button_number > 11 and page_next_button_number % 10 == 1:
                     self.driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.END)
                     time.sleep(0.5)
-                    page_next_button = self.driver.find_element(By.XPATH, page_button_next_xpath_pattern.format(2))
+                    page_next_button = self.find_by_xpath(page_button_next_xpath_pattern.format(2))
                     page_next_button.click()
                     page_next_button_number += 1
             except Exception as e:
