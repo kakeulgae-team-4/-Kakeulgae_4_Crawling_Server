@@ -1,12 +1,14 @@
-import csv
-import time
-
+from time import sleep
 from web_driver import WebDriver
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from job_korea_config import path_repository as xpath
+
+
+short_time = .5
+long_time = 2
 
 
 def get_path(path: str, *args):
@@ -35,7 +37,7 @@ class JobkoreaWebDriver(WebDriver):
 
     def init_order_select(self):
         self.body.send_keys(Keys.END)
-        time.sleep(2)
+        sleep(long_time)
         # 특정 엘리먼트가 나타날 때까지 스크롤 다운
         try:
             self.wait_and_click_xpath(xpath['order_tab'])
@@ -46,7 +48,7 @@ class JobkoreaWebDriver(WebDriver):
 
     def init_order_select2(self):
         self.body.send_keys(Keys.END)
-        time.sleep(2)
+        sleep(long_time)
         # 특정 엘리먼트가 나타날 때까지 스크롤 다운
         try:
             self.wait_and_click_xpath(xpath['num_of_list_btn'])
@@ -56,7 +58,7 @@ class JobkoreaWebDriver(WebDriver):
             print("특정 엘리먼트가 발견되지 않았습니다. 스크롤을 내리면서 기다리겠습니다.")
 
     def maincrawling(self):
-        time.sleep(0.5)
+        sleep(short_time)
 
         page_button_next_xpath_pattern = xpath['page_next_button_pattern']
         # 초기 페이지 버튼 번호
@@ -105,23 +107,23 @@ class JobkoreaWebDriver(WebDriver):
                 page_button_xpath = xpath['page_button_pattern'].format(page_button_number)
 
                 self.driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.END)
-                time.sleep(0.5)
+                sleep(short_time)
                 page_button = self.driver.find_element(By.XPATH, page_button_xpath)
                 page_button.click()
-                time.sleep(0.5)
+                sleep(short_time)
                 page_button_number += 1
                 page_next_button_number += 1
                 if page_button_number == 11:
                     page_button_number = 2
                 if page_next_button_number == 11:
                     self.driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.END)
-                    time.sleep(0.5)
+                    sleep(short_time)
                     page_next_button = self.find_by_xpath(xpath['page_next_button'])
                     page_next_button.click()
                     page_next_button_number += 1
                 if page_next_button_number > 11 and page_next_button_number % 10 == 1:
                     self.driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.END)
-                    time.sleep(0.5)
+                    sleep(short_time)
                     page_next_button = self.find_by_xpath(page_button_next_xpath_pattern.format(2))
                     page_next_button.click()
                     page_next_button_number += 1
