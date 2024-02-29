@@ -8,6 +8,8 @@ from selenium import webdriver
 import csv
 import time
 
+from selenium.webdriver.support.wait import WebDriverWait
+
 
 class WebDriver:
     """
