@@ -18,18 +18,24 @@ class JobkoreaWebDriver(WebDriver):
         button.click()
         return button.text
 
-    def click_search_button(self):
-        self.wait_button_and_click(By.ID, 'dev-btn-search')
-        body = self.driver.find_element(By.TAG_NAME, 'body')
-        print(body)
+    def wait_and_click_xpath(self, element: str):
+        button = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH, element)))
+        button.click()
+        return button.text
+
+    def get_row_element(self, path: str, *args):
+        if len(args) == 1:
+            return xpath['row'][path].format(idx=str(args[0]))
+        elif len(args) == 2:
+            return xpath['row'][path].format(idx=str(args[0]), span_idx=str(args[1]))
 
     def init_order_select(self):
         self.body.send_keys(Keys.END)
         time.sleep(2)
         # 특정 엘리먼트가 나타날 때까지 스크롤 다운
         try:
-            self.wait_button_and_click(By.XPATH, xpath['order_tab'])
-            self.wait_button_and_click(By.XPATH, xpath['order_tab_optional'])
+            self.wait_and_click_xpath(xpath['order_tab'])
+            self.wait_and_click_xpath(xpath['order_tab_optional'])
             self.page_source = self.driver.page_source
         except Exception as e:
             print("특정 엘리먼트가 발견되지 않았습니다. 스크롤을 내리면서 기다리겠습니다.")
@@ -39,8 +45,8 @@ class JobkoreaWebDriver(WebDriver):
         time.sleep(2)
         # 특정 엘리먼트가 나타날 때까지 스크롤 다운
         try:
-            self.wait_button_and_click(xpath['num_of_list_btn'])
-            self.wait_button_and_click(xpath['num_50_of_list_btn'])
+            self.wait_and_click_xpath(xpath['num_of_list_btn'])
+            self.wait_and_click_xpath(xpath['num_50_of_list_btn'])
             self.page_source = self.driver.page_source
         except Exception as e:
             print("특정 엘리먼트가 발견되지 않았습니다. 스크롤을 내리면서 기다리겠습니다.")
@@ -48,7 +54,6 @@ class JobkoreaWebDriver(WebDriver):
     def maincrawling(self):
         time.sleep(0.5)
 
-        page_button_xpath_pattern = xpath['page_button_pattern']
         page_button_next_xpath_pattern = xpath['page_next_button_pattern']
         # 초기 페이지 버튼 번호
         page_button_number = 2
@@ -60,19 +65,16 @@ class JobkoreaWebDriver(WebDriver):
                     try:
                         # tr[현재 행 + 1]이 화면에 보이지 않으면 스크롤을 내리고 기다린다.
                         WebDriverWait(self.driver, 10).until(
-                            EC.presence_of_element_located((By.XPATH, xpath['row']['one'].format(idx=str(tr_index)))))
+                            EC.presence_of_element_located((By.XPATH, self.get_row_element('one', tr_index))))
 
                         # company name
-                        company_name = self.driver.find_element(By.XPATH, xpath['row']['company_name'].format(
-                            idx=str(tr_index))).text
+                        company_name = self.driver.find_element(By.XPATH, self.get_row_element('company_name', tr_index)).text
 
                         # post name
-                        post_name = self.driver.find_element(By.XPATH,
-                                                             xpath['row']['post_name'].format(idx=str(tr_index))).text
+                        post_name = self.driver.find_element(By.XPATH, self.get_row_element('post_name', tr_index)).text
 
                         # url
-                        url = self.driver.find_element(By.XPATH,
-                                                       xpath['row']['url'].format(idx=str(tr_index))).get_attribute(
+                        url = self.driver.find_element(By.XPATH, self.get_row_element('url', tr_index)).get_attribute(
                             'href')
 
                         # span 요소 수만큼 반복
@@ -80,33 +82,26 @@ class JobkoreaWebDriver(WebDriver):
                         span_index = 1
                         while True:
                             try:
-                                span_element = self.driver.find_element(By.XPATH,
-                                                                        xpath['row']['tag'].format(idx=str(tr_index)),
-                                                                        span_idx=str(span_index))
-                                span_text = span_element.text
-                                span_texts.append(span_text)  # 각 span 요소를 리스트에 추가
-                                print(f"태그 {span_index} : {span_text}")
+                                span_element = self.driver.find_element(By.XPATH, self.get_row_element('tag', tr_index, span_index)).text
+                                span_texts.append(span_element)  # 각 span 요소를 리스트에 추가
                                 span_index += 1
                             except:
                                 # span 요소가 없으면 반복문 종료
                                 break
 
                         # work type
-                        work_type = self.driver.find_element(By.XPATH,
-                                                             xpath['row']['work_type'].format(idx=str(tr_index))).text
+                        work_type = self.driver.find_element(By.XPATH, self.get_row_element('work_type', tr_index)).text
 
                         # created at
-                        created_at = self.driver.find_element(By.XPATH,
-                                                              xpath['row']['created_at'].format(idx=str(tr_index))).text
+                        created_at = self.driver.find_element(By.XPATH, self.get_row_element('created_at', tr_index)).text
 
                         # deadline
-                        deadline = self.driver.find_element(By.XPATH,
-                                                            xpath['row']['deadline'].format(idx=str(tr_index))).text
+                        deadline = self.driver.find_element(By.XPATH, self.get_row_element('deadline', tr_index)).text
                     except Exception as e:
                         print(f"텍스트 {tr_index}를 가져오는데 실패했습니다.")
 
                 # 페이지 버튼 클릭
-                page_button_xpath = page_button_xpath_pattern.format(page_button_number)
+                page_button_xpath = xpath['page_button_pattern'].format(page_button_number)
 
                 self.driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.END)
                 time.sleep(0.5)
@@ -120,8 +115,7 @@ class JobkoreaWebDriver(WebDriver):
                 if page_next_button_number == 11:
                     self.driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.END)
                     time.sleep(0.5)
-                    page_next_button = self.driver.find_element(By.XPATH,
-                                                                xpath['page_next_button'])
+                    page_next_button = self.driver.find_element(By.XPATH, xpath['page_next_button'])
                     page_next_button.click()
                     page_next_button_number += 1
                 if page_next_button_number > 11 and page_next_button_number % 10 == 1:
