@@ -3,8 +3,7 @@ from strategy.collector import Collector
 from web_driver import WebDriver
 from domain.post.post_builder import PostBuilder
 from collections import defaultdict
-import json
-
+from strategy.saramin.saramin_config import parameter_config as configs
 from logger.stream_logger import StreamLogger
 from param_printer import ParamPrinter
 
@@ -23,28 +22,25 @@ class SaraminCollector(Collector):
         self.init_params() #URL설정부분
 
     def init_params(self):
-        with open("saramin_config.json") as config_file:
-            configs = json.load(config_file)
-            self.base_url = configs['base_url']
-            self.params = {k: v for k, v in configs.items() if k != 'base_url'}
-            self.make_query_parameter()
+        self.base_url = configs['base_url']
+        self.params = {k: v for k, v in configs.items() if k != 'base_url'}
+        self.make_query_parameter()
         self.set_source_page()
 
     def make_query_parameter(self):
         param_list = [f"{key}={value}" for key, value in self.params.items()]
         self.url = f"{self.base_url}?{'&'.join(param_list)}"
 
-    def save_all_posts(self):
-        while int(self.params['page']) <= 2:
-            log.log(self.url)
-            self.set_source_page()
-            self.find_posts()
-            for post in self.posts:
-                ParamPrinter.log_class_param(log, post, self.params['page'])
-            # self.posts = []
-            self.find_next_page()
+    # def save_all_posts(self):
+    #     while int(self.params['page']) <= 2:
+    #         log.log(self.url)
+    #         self.set_source_page()
+    #         self.find_posts()
+    #         for post in self.posts:
+    #             ParamPrinter.log_class_param(log, post, self.params['page'])
+    #         # self.posts = []
+    #         self.find_next_page()
 
-    #크롤링 break걸어주는 함수?
     def next_page_exists(self):
         soup = BeautifulSoup(self.source_page, 'html.parser')
         next_button = soup.find('a', {'class': 'BtnNext'})
@@ -62,44 +58,29 @@ class SaraminCollector(Collector):
                 continue
 
             builder = PostBuilder()  # PostBuilder 인스턴스 생성
-            # company_name= job.find('div', {'class': 'col company_nm'}).find(class_='str_tit')
             company_name = job.find('div', {'class': 'col company_nm'}).find(class_='str_tit').text.strip()
-
-            log.log(company_name)
-
             post_name = job.find('div', {'class': 'job_tit'}).a.text.strip()
-
             post_url = "https://www.saramin.co.kr" + job.find('div', {'class': 'job_tit'}).a['href']
-
-            # 근무지 추출
             work_place = job.find('p', {'class': 'work_place'}).text.strip() if job.find('p', {
                 'class': 'work_place'}) else ''
-
-            # 경력 요건 및 채용 형태 추출
-            career_and_job_type = job.find('p', {'class': 'career'}).text.strip() if job.find('p', {
+            career_and_work_type = job.find('p', {'class': 'career'}).text.strip() if job.find('p', {
                 'class': 'career'}) else ''
-            if "·" in career_and_job_type:
-                career, job_type = career_and_job_type.rsplit("·", 1)
+            if "·" in career_and_work_type:
+                career, work_type = career_and_work_type.rsplit("·", 1)
                 career = career.strip()
-                job_type = job_type.strip()
+                work_type = work_type.strip()
             else:
-                career = career_and_job_type  # "·"가 없는 경우 전체 문자열을 career로 간주
-                job_type = ""  # 기본값 설정
-
-            # 학력 요건 추출
+                career = career_and_work_type  # "·"가 없는 경우 전체 문자열을 career로 간주
+                work_type = ""  # 기본값 설정
             education = job.find('p', {'class': 'education'}).text.strip() if job.find('p',
                                                                                        {'class': 'education'}) else ''
-
-            # 공고 기한 및 생성날짜 추출
             support_info = job.find('div', {'class': 'support_info'})
             deadline = support_info.find('span', {'class': 'date'}).text.strip() if support_info.find('span', {
                 'class': 'date'}) else ''
             created_at = support_info.find('span', {'class': 'deadlines'}).text.strip() if support_info.find('span', {
                 'class': 'deadlines'}) else ''
-
-            # builder를 사용하여 Post 객체 설정 및 생성
             post = builder.company_name(company_name).post_name(post_name).career(career).education(education).location(
-                work_place).work_type(job_type).url(post_url).deadline(deadline).created_at(created_at).build()
+                work_place).work_type(work_type).url(post_url).deadline(deadline).created_at(created_at).build()
 
             self.posts.append(post)
 
@@ -112,10 +93,3 @@ class SaraminCollector(Collector):
         # WebDriver를 사용해 현재 설정된 URL의 페이지를 로드하고 HTML 소스를 가져옴
         self.webdriver.open_url(self.url)
         self.source_page = self.webdriver.get_page_source()
-
-
-if __name__ == '__main__':
-    strategy = SaraminCollector()
-    strategy.save_all_posts()
-    for pp in strategy.posts:
-        print(pp.post_name)
