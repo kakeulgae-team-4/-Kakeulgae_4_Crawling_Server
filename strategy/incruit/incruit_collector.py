@@ -3,12 +3,8 @@ from strategy.collector import Collector
 from web_driver import WebDriver
 from domain.post.post_builder import PostBuilder
 from collections import defaultdict
-
-from logger.file_logger import FileLogger
-from param_printer import ParamPrinter
 from strategy.incruit.incruit_config import parameter_config as config
-
-log = FileLogger()
+from strategy.incruit.incruit_preprocessor import IncruitPreprocessor
 
 
 class IncruitCollector(Collector):
@@ -18,6 +14,7 @@ class IncruitCollector(Collector):
         self.url = None  # url은 page마다 변경됨 query parameter 수정해야함
         self.params = defaultdict(str)  # page는 변경되고 나머지는 고정
         self.webdriver = WebDriver()  # webdriver는 열려있음
+        self.preprocessor = IncruitPreprocessor()
         self.source_page = None  # source page는 변경됨
         self.init_params()
 
@@ -46,8 +43,7 @@ class IncruitCollector(Collector):
         while self.next_page_exists():
             self.set_source_page()
             self.find_one_page()
-            for post in self.posts:
-                ParamPrinter.log_class_param(log, post, self.params['page'])
+            self.preprocessor.batch_process(self.posts)
             self.posts = []
             self.find_next_page()
 

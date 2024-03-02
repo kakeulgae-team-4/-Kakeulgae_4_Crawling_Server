@@ -1,5 +1,5 @@
 from domain.post.post_builder import PostBuilder
-from strategy.incruit.incruit_post_preprocessor import IncruitPostPreprocessor
+from strategy.incruit.incruit_preprocessor import IncruitPreprocessor
 import unittest
 
 
@@ -15,7 +15,7 @@ class IncruitPreprocessorTest(unittest.TestCase):
                      deadline("~02.08 (목)").
                      url("https://job.incruit.com/jobdb_info/jobpost.asp?job=2401290004100").
                      created_at("(3일전 등록)").build())
-        self.preprocessor = IncruitPostPreprocessor(self.item)
+        self.preprocessor = IncruitPreprocessor(self.item)
         self.preprocessor.career()
 
     def test_career(self):

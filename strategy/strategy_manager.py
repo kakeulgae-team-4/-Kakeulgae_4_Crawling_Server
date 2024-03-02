@@ -20,4 +20,6 @@ class StrategyManager:
         self.strategy = self.strategies[self.strategy_idx]
 
     def execute(self):
-        return self.strategy.find_posts()
+        for i in range(len(self.strategies)):
+            self.strategy.find_posts()
+            self.get_next_strategy()

@@ -4,7 +4,7 @@ from flask_app import app, db
 from flask_app.models import *
 
 with app.app_context():
-    post = Post(company_name="카카오클라우드스쿨",
+    post = JobPost(company_name="카카오클라우드스쿨",
                 career=Career.query.filter_by(type='1~3년').first(),
                 education=Education.query.filter_by(type='석사졸업').first(),
                 job_detail=JobDetail.query.filter_by(type='웹개발').first(),

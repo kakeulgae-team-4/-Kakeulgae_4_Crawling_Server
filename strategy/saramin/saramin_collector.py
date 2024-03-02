@@ -52,7 +52,6 @@ class SaraminCollector(Collector):
         jobs = soup.find_all('div', {'class': 'list_item'})
         for job in jobs:
             if not job.find('div', {'class': 'box_item'}):
-                # box_item이 없으면 다음 job으로 넘어감.
                 continue
 
             builder = PostBuilder()  # PostBuilder 인스턴스 생성
