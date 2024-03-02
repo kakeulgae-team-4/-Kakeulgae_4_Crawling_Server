@@ -31,16 +31,6 @@ class SaraminCollector(Collector):
         param_list = [f"{key}={value}" for key, value in self.params.items()]
         self.url = f"{self.base_url}?{'&'.join(param_list)}"
 
-    # def save_all_posts(self):
-    #     while int(self.params['page']) <= 2:
-    #         log.log(self.url)
-    #         self.set_source_page()
-    #         self.find_posts()
-    #         for post in self.posts:
-    #             ParamPrinter.log_class_param(log, post, self.params['page'])
-    #         # self.posts = []
-    #         self.find_next_page()
-
     def next_page_exists(self):
         soup = BeautifulSoup(self.source_page, 'html.parser')
         next_button = soup.find('a', {'class': 'BtnNext'})
@@ -49,9 +39,17 @@ class SaraminCollector(Collector):
         return False
 
     def find_posts(self, **kwargs):
+        while self.next_page_exists():
+            self.set_source_page()
+            self.find_one_page()
+            for post in self.posts:
+                ParamPrinter.log_class_param(log, post, self.params['page'])
+            self.posts = []
+            self.find_next_page()
+
+    def find_one_page(self):
         soup = BeautifulSoup(self.source_page, 'html.parser')
         jobs = soup.find_all('div', {'class': 'list_item'})
-
         for job in jobs:
             if not job.find('div', {'class': 'box_item'}):
                 # box_item이 없으면 다음 job으로 넘어감.
