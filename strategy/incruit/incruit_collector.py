@@ -35,16 +35,6 @@ class IncruitCollector(Collector):
             param_list.append(key + '=' + self.params[key])
         self.url = self.base_url + '&'.join(param_list)
 
-    def save_all_posts(self):
-        while int(self.params['page']) <= 2:
-            log.log(self.url)
-            self.set_source_page()
-            self.find_posts()
-            for post in self.posts:
-                ParamPrinter.log_class_param(log, post, self.params['page'])
-            self.posts = []
-            self.find_next_page()
-
     def next_page_exists(self):
         soup = BeautifulSoup(self.source_page, 'html.parser')
         next_button = soup.find('a', {'class': 'next_n'})
@@ -53,50 +43,57 @@ class IncruitCollector(Collector):
         return False
 
     def find_posts(self, **kwargs):
+        while self.next_page_exists():
+            self.set_source_page()
+            self.find_one_page()
+            for post in self.posts:
+                ParamPrinter.log_class_param(log, post, self.params['page'])
+            self.posts = []
+            self.find_next_page()
+
+    def find_one_page(self):
         builder = PostBuilder()
         tags = []
         soup = BeautifulSoup(self.source_page, 'html.parser')
         content_list = soup.find('div', {'class': 'cBbslist_contenst'})
         contents = content_list.find_all('ul', {'class': 'c_row'})
-
         for content in contents:
             cell_first = content.find('div', {'class': 'cell_first'})
             cell_mid = content.find('div', {'class': 'cell_mid'})
             cell_last = content.find('div', {'class': 'cell_last'})
 
-            company_name = cell_first.find('a', {'class': 'cpname'}).text  # 1. 회사이름
+            company_name = cell_first.find('a', {'class': 'cpname'}).text
             post = cell_mid.find('div', {'class': 'cl_top'}).find('a')
-            company_url = post.get('href')  # 회사 url
-            post_name = post.text  # 2. 공고명
-            url = post.get('href')  # 7. 공고 url
+            post_name = post.text
+            url = post.get('href')
 
             spec = cell_mid.find('div', {'class': 'cl_md'}).find_all('span')
-            career = spec[0].text  # 3. 경력
-            education = spec[1].text  # 4. 교육
-            location = spec[2].text  # 5. 지역
-            job_type = spec[3].text  # 6. 채용 형태
+            career = spec[0].text
+            education = spec[1].text
+            location = spec[2].text
+            work_type = spec[3].text
 
             company_tags = cell_mid.find('div', {'class': 'cl_btm'}).find_all('span')
 
             for tag in company_tags:
-                tags.append(tag.text)  # tag 정보
+                tags.append(tag.text)
 
-            dates = cell_last.find_all('span')  # 7. 마감
+            dates = cell_last.find_all('span')
             deadline = dates[0].text
             created_at = dates[1].text
 
-            self.add_post(builder, career, company_name, created_at, deadline, education, job_type, location, post_name,
+            self.add_post(builder, career, company_name, created_at, deadline, education, work_type, location, post_name,
                           url)
 
     def add_post(self, builder, career, company_name, created_at,
-                 deadline, education, job_type, location, post_name, url):
+                 deadline, education, work_type, location, post_name, url):
         post_item = (builder.
                      company_name(company_name).
                      post_name(post_name).
                      career(career).
                      education(education).
                      location(location).
-                     work_type(job_type).
+                     work_type(work_type).
                      url(url).
                      deadline(deadline).
                      created_at(created_at).
@@ -110,8 +107,3 @@ class IncruitCollector(Collector):
     def set_source_page(self):
         self.webdriver.open_url(self.url)
         self.source_page = self.webdriver.get_page_source()
-
-
-if __name__ == '__main__':
-    strategy = IncruitCollector()
-    strategy.save_all_posts()

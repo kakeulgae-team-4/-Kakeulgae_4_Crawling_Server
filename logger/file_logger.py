@@ -32,9 +32,8 @@ class FileLogger:
         FileLogger.logger.addHandler(file_handler)
 
     @staticmethod
-    def log(message: str):
-        FileLogger.setPath()
-        FileLogger.logger.info(message)
+    def log(*args):
+        FileLogger.logger.info('||'.join(args))
 
 
 if __name__ == '__main__':

@@ -1,5 +1,5 @@
 from scheduler.scheduler import Scheduler
-from StrategyManager import StrategyManager
+from strategy_manager import StrategyManager
 
 
 class Service:

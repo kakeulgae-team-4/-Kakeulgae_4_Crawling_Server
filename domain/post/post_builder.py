@@ -13,7 +13,7 @@ class PostBuilder:
         경력 career VARCHAR(20)
         교육 education VARCHAR(20)
         지역 location VARCHAR(20)
-        채용형태 job_type VARCHAR(20)
+        채용형태 work_type VARCHAR(20)
         마감일 deadline DATE
         글URL url VARCHAR(255)
         생성날짜 created_at DATETIME
@@ -40,8 +40,8 @@ class PostBuilder:
         self.__post.location = location
         return self
 
-    def work_type(self, job_type):
-        self.__post.job_type = job_type
+    def work_type(self, work_type):
+        self.__post.work_type = work_type
         return self
 
     def deadline(self, deadline):

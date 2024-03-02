@@ -6,3 +6,8 @@ parameter_config = {
     "page": "1",
     "url": ""
 }
+
+preprocessing_map = {
+    "education": ('이상', '↑'),
+    "career": ('↑')
+}

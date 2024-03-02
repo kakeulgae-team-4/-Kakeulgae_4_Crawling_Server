@@ -9,7 +9,7 @@ class Post:
         경력 career VARCHAR(20)
         교육 education VARCHAR(20)
         지역 location VARCHAR(20)
-        채용형태 job_type VARCHAR(20)
+        채용형태 work_type VARCHAR(20)
         마감일 deadline DATE
         글URL url VARCHAR(255)
         생성날짜 created_at DATETIME
@@ -19,7 +19,7 @@ class Post:
         self.__career = None
         self.__education = None
         self.__location = None
-        self.__job_type = None
+        self.__work_type = None
         self.__deadline = None
         self.__url = None
         self.__created_at = None
@@ -65,12 +65,12 @@ class Post:
         self.__location = location
 
     @property
-    def job_type(self):
-        return self.__job_type
+    def work_type(self):
+        return self.__work_type
 
-    @job_type.setter
-    def job_type(self, job_type):
-        self.__job_type = job_type
+    @work_type.setter
+    def work_type(self, work_type):
+        self.__work_type = work_type
 
     @property
     def deadline(self):

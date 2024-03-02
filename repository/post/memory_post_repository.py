@@ -17,7 +17,7 @@ class MemoryPostRepository(PostRepository):
             writer.writerow([data.company_name, data.post_name,
                              data.career, data.education,
                              data.location, data.location,
-                             data.job_type, data.deadline,
+                             data.work_type, data.deadline,
                              data.url, data.created_at])
 
     @staticmethod
