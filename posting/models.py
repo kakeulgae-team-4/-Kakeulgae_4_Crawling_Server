@@ -1,6 +1,16 @@
 from django.db import models
 
 
+class IncruitJobMapping(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    incruit_job = models.TextField()
+    saramin_job = models.TextField()
+
+    class Meta:
+        managed = False
+        db_table = 'incruit_job_mapping'
+
+
 class Education(models.Model):
     id = models.BigAutoField(primary_key=True)
     type = models.CharField(max_length=90)
@@ -106,7 +116,7 @@ class Region1st(models.Model):
 class Region2nd(models.Model):
     id = models.BigAutoField(primary_key=True)
     type = models.CharField(max_length=25)
-    region_1st = models.ForeignKey(Region1st, on_delete=models.SET_NULL)
+    region_1st = models.ForeignKey(Region1st, on_delete=models.CASCADE)
 
     class Meta:
         managed = False
