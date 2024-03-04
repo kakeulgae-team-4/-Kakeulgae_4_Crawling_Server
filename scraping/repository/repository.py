@@ -8,5 +8,5 @@ class PostRepository(ABC):
         pass
 
     @abstractmethod
-    def get_announcement_by_id(self, post_id: int):
+    def find_one(self, post_id: int):
         pass
