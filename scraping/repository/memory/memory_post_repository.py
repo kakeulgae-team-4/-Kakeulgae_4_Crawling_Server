@@ -1,7 +1,7 @@
 from typing import List
 
 from repository import Repository
-from domain.post.post import Post
+from dto.post.post import Post
 import csv
 
 

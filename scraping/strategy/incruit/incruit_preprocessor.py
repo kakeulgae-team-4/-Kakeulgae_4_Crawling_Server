@@ -1,5 +1,5 @@
 from typing import List
-from domain.post.post import Post
+from dto.post.post import Post
 from datetime import datetime, timedelta
 import re
 

@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 from strategy.collector import Collector
 from web_driver import WebDriver
-from domain.post.post_builder import PostBuilder
+from dto.post.post_builder import PostBuilder
 from collections import defaultdict
 from strategy.saramin.saramin_config import parameter_config as configs
 from logger.stream_logger import StreamLogger

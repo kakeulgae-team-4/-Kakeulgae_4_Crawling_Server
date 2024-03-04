@@ -41,15 +41,18 @@ class JobkoreaWebDriver(WebDriver):
 
     def execute(self):
         while True:
-            try:
-                posts = []
-                for row_idx in range(1, param['row_num']):
-                    self.find_one(row_idx)
-                self.move_next_page()
-            except Exception:
-                print('Error occur')
-                exit()
-                pass
+            posts = []
+            for row_idx in range(1, param['row_num']):
+                post = self.find_one(row_idx)
+                try:
+                    pass
+                    """
+                    @ preprocessor 전달 코드 추가
+                    """
+                except:
+                    log.log(post)
+                    pass
+            self.move_next_page()
 
     def move_next_page(self):
         self.wait_and_click_xpath(xpath['page_button_pattern'].format(self.page_button_num))

@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Any
 
-from domain.post.post import Post
+from dto.post.post import Post
 
 
 class Repository(ABC):
