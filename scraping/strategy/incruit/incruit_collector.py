@@ -17,6 +17,7 @@ class IncruitCollector(Collector):
         self.preprocessor = IncruitPreprocessor()
         self.source_page = None  # source page는 변경됨
         self.init_params()
+        self.builder = PostBuilder()
 
     def init_params(self):
         self.base_url = config['base_url']
@@ -48,53 +49,45 @@ class IncruitCollector(Collector):
             self.find_next_page()
 
     def find_one_page(self):
-        builder = PostBuilder()
-        tags = []
         soup = BeautifulSoup(self.source_page, 'html.parser')
         content_list = soup.find('div', {'class': 'cBbslist_contenst'})
         contents = content_list.find_all('ul', {'class': 'c_row'})
         for content in contents:
-            cell_first = content.find('div', {'class': 'cell_first'})
-            cell_mid = content.find('div', {'class': 'cell_mid'})
-            cell_last = content.find('div', {'class': 'cell_last'})
+            self.find_one(content)
 
-            company_name = cell_first.find('a', {'class': 'cpname'}).text
-            post = cell_mid.find('div', {'class': 'cl_top'}).find('a')
-            post_name = post.text
-            url = post.get('href')
+    def find_one(self, content):
+        cell_first = content.find('div', {'class': 'cell_first'})
+        cell_mid = content.find('div', {'class': 'cell_mid'})
+        cell_last = content.find('div', {'class': 'cell_last'})
+        company_name = cell_first.find('a', {'class': 'cpname'}).text  # 회사 이름
+        post = cell_mid.find('div', {'class': 'cl_top'}).find('a')
+        post_name = post.text  # 공고명
+        url = post.get('href')  # url
+        spec = cell_mid.find('div', {'class': 'cl_md'}).find_all('span')
+        career = spec[0].text
+        education = spec[1].text
+        location = spec[2].text
+        work_type = spec[3].text
+        company_tags = cell_mid.find('div', {'class': 'cl_btm'}).find_all('span')
+        tags = []
+        for tag in company_tags:
+            tags.append(tag.text)
+        dates = cell_last.find_all('span')
+        deadline = dates[0].text
+        created_at = dates[1].text
 
-            spec = cell_mid.find('div', {'class': 'cl_md'}).find_all('span')
-            career = spec[0].text
-            education = spec[1].text
-            location = spec[2].text
-            work_type = spec[3].text
-
-            company_tags = cell_mid.find('div', {'class': 'cl_btm'}).find_all('span')
-
-            for tag in company_tags:
-                tags.append(tag.text)
-
-            dates = cell_last.find_all('span')
-            deadline = dates[0].text
-            created_at = dates[1].text
-
-            self.add_post(builder, career, company_name, created_at, deadline, education, work_type, location, post_name,
-                          url)
-
-    def add_post(self, builder, career, company_name, created_at,
-                 deadline, education, work_type, location, post_name, url):
-        post_item = (builder.
-                     company_name(company_name).
-                     post_name(post_name).
-                     career(career).
-                     education(education).
-                     location(location).
-                     work_type(work_type).
-                     url(url).
-                     deadline(deadline).
-                     created_at(created_at).
-                     build())
-        self.posts.append(post_item)
+        post_dto = (self.builder.
+                    company_name(company_name).
+                    post_name(post_name).
+                    career(career).
+                    education(education).
+                    location(location).
+                    work_type(work_type).
+                    url(url).
+                    deadline(deadline).
+                    created_at(created_at).
+                    build())
+        self.posts.append(post_dto)
 
     def find_next_page(self):
         self.params['page'] = str(int(self.params['page']) + 1)

@@ -9,13 +9,6 @@ class IncruitPreprocessor:
         for post in posts:
             self.education(post)
 
-    def career(self, post: Post):
-        post.career = post.career.replace('이상', '')
-        post.career = post.career.replace('↑', '')
-        careers = post.career.split('/')
-        for career in careers:
-            post.career = career
-
     def education(self, post: Post):
         post.education = post.education.replace('이상', '').strip()  # 대졸 이상 -> 대졸
         post.education = post.education.replace('↑', '').strip()  # 대졸↑ -> 대졸
@@ -46,3 +39,10 @@ class IncruitPreprocessor:
             posted_date = re.findall(r'\d+', post.created_at)
             print(type(create_date))
             post.created_at = create_date - timedelta(days=int(posted_date[0]))
+
+    def career(self, post: Post):
+        post.career = post.career.replace('이상', '')
+        post.career = post.career.replace('↑', '')
+        careers = post.career.split('/')
+        for career in careers:
+            post.career = career
