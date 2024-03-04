@@ -42,8 +42,8 @@ class SaraminCollector(Collector):
         while self.next_page_exists():
             self.set_source_page()
             self.find_one_page()
-            for post in self.posts:
-                ParamPrinter.log_class_param(log, post, self.params['page'])
+            # for post in self.posts:
+            #     ParamPrinter.log_class_param(log, post, self.params['page'])
             self.posts = []
             self.find_next_page()
 

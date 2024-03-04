@@ -1,12 +1,14 @@
 from abc import ABC, abstractmethod
+from typing import Any
+
 from domain.post.post import Post
 
 
-class PostRepository(ABC):
+class Repository(ABC):
     @abstractmethod
-    def save(self, post: Post):
+    def save(self, item: Any):
         pass
 
     @abstractmethod
-    def find_one(self, post_id: int):
+    def find_one(self, id: int):
         pass

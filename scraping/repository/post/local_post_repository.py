@@ -1,9 +1,8 @@
-import import_django
-from post.post_repository import PostRepository
+from repository import Repository
 from posting.models import JobPosting
 
 
-class MemoryDbPostRepository(PostRepository):
+class LocalPostRepository(Repository):
     def save(self, post: JobPosting):
         post.save()
         return post.id

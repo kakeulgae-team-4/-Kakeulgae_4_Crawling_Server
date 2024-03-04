@@ -42,6 +42,7 @@ class JobkoreaWebDriver(WebDriver):
     def execute(self):
         while True:
             try:
+                posts = []
                 for row_idx in range(1, param['row_num']):
                     self.find_one(row_idx)
                 self.move_next_page()

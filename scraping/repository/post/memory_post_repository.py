@@ -1,18 +1,18 @@
 from typing import List
 
-from repository.post.post_repository import PostRepository
+from repository import Repository
 from domain.post.post import Post
 import csv
 
 
-class MemoryPostRepository(PostRepository):
+class MemoryRepository(Repository):
     idx = 0
     csv_path = "/Users/koo/Desktop/git/job-webset-crawling/src/resources/incruit/result.csv"
     log_path = "/Users/koo/PycharmProjects/scraping_server/logger/incruit/log.txt"
 
     @staticmethod
     def save(data: Post, **kwargs):
-        with open(MemoryPostRepository.csv_path, 'a') as file:
+        with open(MemoryRepository.csv_path, 'a') as file:
             writer = csv.writer(file)
             writer.writerow([data.company_name, data.post_name,
                              data.career, data.education,
@@ -23,9 +23,9 @@ class MemoryPostRepository(PostRepository):
     @staticmethod
     def save_posts(data: List[Post], **kwargs):
         for datum in data:
-            MemoryPostRepository.save(datum)
+            MemoryRepository.save(datum)
 
     @staticmethod
-    def get_announcement_by_id(announcement_id: int, **kwargs):
+    def find_one(announcement_id: int, **kwargs):
         return None
         # return MemoryPostRepository.store[announcement_id]
