@@ -1,10 +1,24 @@
 from django.db import models
 
 
+class JobkoreaEduMapping(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    jk_edu = models.TextField()
+    si_edu = models.TextField()
+
+    class Meta:
+        managed = False
+        db_table = 'jobkorea_edu_mapping'
+
+
 class JobkoreaJobMapping(models.Model):
     id = models.BigAutoField(primary_key=True)
     jobkorea_job = models.TextField()
     saramin_job = models.TextField()
+
+    class Meta:
+        managed = False
+        db_table = 'jobkorea_job_mapping'
 
 class IncruitJobMapping(models.Model):
     id = models.BigAutoField(primary_key=True)
