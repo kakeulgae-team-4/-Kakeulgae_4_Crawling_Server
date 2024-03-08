@@ -75,17 +75,15 @@ WSGI_APPLICATION = 'job_scraping_server.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 import pymysql
-from os import environ
 
 pymysql.install_as_MySQLdb()
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': environ['DB_NAME'],
-        'USER': environ['DB_USER'],
-        'PASSWORD': environ['DB_PASSWORD'],
-        'HOST': environ['DB_URL'],
+        'NAME': 'test99',
+        'USER': 'kaclgae',
+        'PASSWORD': 'yyang011!',
+        'HOST': 'kaclgae-db-4.c7gz2tbhkys9.ap-northeast-2.rds.amazonaws.com',
         'PORT': '3306'
     }
 }

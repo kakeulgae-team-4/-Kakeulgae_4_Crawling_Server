@@ -1,6 +1,11 @@
 from django.db import models
 
 
+class JobkoreaJobMapping(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    jobkorea_job = models.TextField()
+    saramin_job = models.TextField()
+
 class IncruitJobMapping(models.Model):
     id = models.BigAutoField(primary_key=True)
     incruit_job = models.TextField()
