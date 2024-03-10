@@ -1,4 +1,4 @@
-from dto.post.post import Post
+from dto.post.before_process_dto import BeforeProcessDto
 from copy import deepcopy
 
 
@@ -18,7 +18,7 @@ class PostBuilder:
         글URL url VARCHAR(255)
         생성날짜 created_at DATETIME
         """
-        self.__post = Post()
+        self.__post = BeforeProcessDto()
 
     def company_name(self, company_name):
         self.__post.company_name = company_name
@@ -58,5 +58,5 @@ class PostBuilder:
 
     def build(self):
         ret = deepcopy(self.__post)
-        self.__post = Post()
+        self.__post = BeforeProcessDto()
         return ret

@@ -20,15 +20,15 @@ class WebDriver:
     def __init__(self, headless: bool = False, no_sandbox: bool = True):
         self.body = None
         self.page_source = None
-        chrome_options = Options()
+        self.chrome_options = Options()
         if headless:
-            chrome_options.add_argument('--headless')
+            self.chrome_options.add_argument('--headless')
         if no_sandbox:
-            chrome_options.add_argument('--no-sandbox')
-        chrome_options.add_experimental_option('detach', True)
-        chrome_options.add_experimental_option("excludeSwitches", ["enable-logging"])
+            self.chrome_options.add_argument('--no-sandbox')
+        self.chrome_options.add_experimental_option('detach', True)
+        self.chrome_options.add_experimental_option("excludeSwitches", ["enable-logging"])
 
-        self.driver = webdriver.Chrome(options=chrome_options)
+        self.driver = webdriver.Chrome(options=self.chrome_options)
         handles = self.driver.window_handles
         for handle in handles:
             if handle != handles[0]:

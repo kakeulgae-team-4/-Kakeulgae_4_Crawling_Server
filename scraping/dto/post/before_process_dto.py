@@ -1,4 +1,4 @@
-class Post:
+class BeforeProcessDto:
     def __init__(self):
         """
         공고글ID id BIGINT

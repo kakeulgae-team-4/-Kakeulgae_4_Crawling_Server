@@ -1,7 +1,7 @@
 from typing import List
 
 from repository import Repository
-from dto.post.post import Post
+from dto.post.before_process_dto import BeforeProcessDto
 import csv
 
 
@@ -11,7 +11,7 @@ class MemoryRepository(Repository):
     log_path = "/Users/koo/PycharmProjects/scraping_server/logger/incruit/log.txt"
 
     @staticmethod
-    def save(data: Post, **kwargs):
+    def save(data: BeforeProcessDto, **kwargs):
         with open(MemoryRepository.csv_path, 'a') as file:
             writer = csv.writer(file)
             writer.writerow([data.company_name, data.post_name,
@@ -21,7 +21,7 @@ class MemoryRepository(Repository):
                              data.url, data.created_at])
 
     @staticmethod
-    def save_posts(data: List[Post], **kwargs):
+    def save_posts(data: List[BeforeProcessDto], **kwargs):
         for datum in data:
             MemoryRepository.save(datum)
 
