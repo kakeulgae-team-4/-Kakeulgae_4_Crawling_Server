@@ -7,7 +7,7 @@ class JobkoreaEduMapping(models.Model):
     si_edu = models.TextField()
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'jobkorea_edu_mapping'
 
 
@@ -17,7 +17,7 @@ class JobkoreaJobMapping(models.Model):
     saramin_job = models.TextField()
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'jobkorea_job_mapping'
 
 class IncruitJobMapping(models.Model):
@@ -26,7 +26,7 @@ class IncruitJobMapping(models.Model):
     saramin_job = models.TextField()
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'incruit_job_mapping'
 
 
@@ -35,7 +35,7 @@ class Education(models.Model):
     type = models.CharField(max_length=90)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'education'
 
 
@@ -44,7 +44,7 @@ class Job(models.Model):
     type = models.CharField(max_length=25)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'job'
 
 
@@ -61,7 +61,7 @@ class JobPosting(models.Model):
     created_at = models.DateField(null=False, blank=False)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'job_posting'
 
 
@@ -70,17 +70,17 @@ class Career(models.Model):
     type = models.CharField(max_length=90)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'career'
 
 
 class JobPostingCareer(models.Model):
     id = models.BigAutoField(primary_key=True)
-    career = models.ForeignKey(Career, on_delete=models.CASCADE)
-    job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE)
+    career = models.ForeignKey(Career, on_delete=models.CASCADE, null=True)
+    job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, null=True)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'job_posting_career'
 
 
@@ -89,17 +89,17 @@ class WorkType(models.Model):
     type = models.CharField(max_length=90)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'work_type'
 
 
 class JobPostingWorkType(models.Model):
     id = models.BigAutoField(primary_key=True)
-    job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='work_types')
-    work_type = models.ForeignKey(WorkType, on_delete=models.CASCADE, related_name='work_types')
+    job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='work_types', null=True)
+    work_type = models.ForeignKey(WorkType, on_delete=models.CASCADE, related_name='work_types', null=True)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'job_posting_work_type'
 
 
@@ -108,18 +108,18 @@ class JobCategory(models.Model):
     type = models.CharField(max_length=90)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'job_category'
 
 
 class JobDetail(models.Model):
     id = models.BigAutoField(primary_key=True)
     type = models.CharField(max_length=90)
-    job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name='job_details')
-    job_category = models.ForeignKey(JobCategory, on_delete=models.CASCADE, related_name='job_details')
+    job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name='job_details', null=True)
+    job_category = models.ForeignKey(JobCategory, on_delete=models.CASCADE, related_name='job_details', null=True)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'job_detail'
 
 
@@ -128,25 +128,25 @@ class Region1st(models.Model):
     type = models.CharField(max_length=25, null=False, blank=False)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'region_1st'
 
 
 class Region2nd(models.Model):
     id = models.BigAutoField(primary_key=True)
     type = models.CharField(max_length=25)
-    region_1st = models.ForeignKey(Region1st, on_delete=models.CASCADE)
+    region_1st = models.ForeignKey(Region1st, on_delete=models.CASCADE, null=True)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'region_2nd'
 
 
 class RegionPostingRelation(models.Model):
     id = models.BigAutoField(primary_key=True)
-    job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name='region_posting_relations')
-    region_2nd = models.ForeignKey(Region2nd, on_delete=models.CASCADE, related_name='region_posting_relations')
+    job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name='region_posting_relations', null=True)
+    region_2nd = models.ForeignKey(Region2nd, on_delete=models.CASCADE, related_name='region_posting_relations', null=True)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'region_posting_relation'
