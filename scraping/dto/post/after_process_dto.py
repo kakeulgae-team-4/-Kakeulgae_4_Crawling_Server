@@ -1,14 +1,15 @@
-from typing import List, Dict
+from typing import List
 from datetime import datetime
 
+
 class AfterProcessDto:
-    def __init__(self):
-        self.__company_name: str
-        self.__post_name: str
-        self.__career: List[str]
-        self.__education: str
-        self.__location = Dict[str]
-        self.__work_type: str
-        self.__deadline: datetime
-        self.__url: str
-        self.__created_at: datetime
+    __company_name: str
+    __post_name: str
+    __career: List[str]  # ['신입', '경력']
+    __education: str
+    __region_1st: str
+    __region_2nd: str
+    __work_type: str
+    __deadline: datetime  # 2024-03-21
+    __url: str
+    __created_at: datetime

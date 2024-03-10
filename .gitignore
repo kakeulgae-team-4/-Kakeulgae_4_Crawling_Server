@@ -161,3 +161,4 @@ cython_debug/
 *.idea
 __pycache__
 db_meta.json
+*/db_config.py

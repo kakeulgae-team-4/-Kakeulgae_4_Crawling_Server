@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 
 from saramin.saramin_web_driver import SaraminWebDriver
 from strategy.collector import Collector
-from dto.post.post_builder import PostBuilder
+from dto.post.before_dto_builder import PostBuilder
 from collections import defaultdict
 from strategy.saramin.saramin_config import parameter_config as configs
 from logger.stream_logger import StreamLogger
