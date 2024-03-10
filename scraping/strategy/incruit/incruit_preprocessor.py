@@ -12,6 +12,17 @@ class IncruitPreprocessor:
     def education(self, post: Post):
         post.education = post.education.replace('이상', '').strip()  # 대졸 이상 -> 대졸
         post.education = post.education.replace('↑', '').strip()  # 대졸↑ -> 대졸
+        # if (post.education[:2] == '석사') or (post.education[:2] == '박사'):
+        #     post.education += '졸업'
+
+        # if '석사' in post.education:
+        #     post.education = '석사졸업'
+
+        # if '초대졸' in post.education:
+        #     post.education = '대학졸업(2,3)년'
+
+        # if '고졸' in post.education:
+        #     post.education = '고등학교졸업'
 
     def deadline(self, post: Post):
         if post.deadline in ('상시', '채용시'):
