@@ -2,7 +2,7 @@ from dto.post.before_process_dto import BeforeProcessDto
 from copy import deepcopy
 
 
-class PostBuilder:
+class BeforeDtoBuilder:
     def __init__(self):
         self.__post = BeforeProcessDto()
 

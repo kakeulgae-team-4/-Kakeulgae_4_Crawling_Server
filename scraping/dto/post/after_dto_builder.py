@@ -3,7 +3,7 @@ from copy import deepcopy
 from post.after_process_dto import AfterProcessDto
 
 
-class PostBuilder:
+class AfterDtoBuilder:
     def __init__(self):
         self.__post = AfterProcessDto()
 
