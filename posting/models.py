@@ -1,6 +1,14 @@
 from django.db import models
 
 
+class JobKoreaRegionMapping(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    jk_region = models.TextField()
+    si_region = models.TextField()
+
+    class Meta:
+        db_table = 'jobkorea_region_mapping'
+
 class JobkoreaEduMapping(models.Model):
     id = models.BigAutoField(primary_key=True)
     jk_edu = models.TextField()

@@ -1,7 +1,7 @@
 from typing import Any
-
+from abc import ABC, abstractmethod
 from models import Career, WorkType, Education, Job, JobPostingCareer, JobPostingWorkType, RegionPostingRelation, \
-    Region2nd
+    Region2nd, JobKoreaRegionMapping
 from repository import Repository
 
 
@@ -107,3 +107,11 @@ class Region2ndPostingRepository(Repository):
 
     def find_one(self, id: int):
         RegionPostingRelation.objects.filter(id=id).first()
+
+
+class JobkoreaRegionMappingRepository(Repository):
+    def save(self, item: Any):
+        pass
+
+    def find_one(self, value: str):
+        return JobKoreaRegionMapping.objects.filter(jk_region=value).first().si_region

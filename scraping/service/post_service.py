@@ -1,4 +1,4 @@
-from local_db import *
+from db_repository import *
 
 
 class PostService:
