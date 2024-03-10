@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Any
 
-from dto.post.post import Post
+from dto.post.before_process_dto import BeforeProcessDto
 
 
 class Repository(ABC):

@@ -1,15 +1,21 @@
 from typing import List
-from dto.post.post import Post
+from dto.post.before_process_dto import BeforeProcessDto
 from datetime import datetime, timedelta
 import re
 
+from post.after_process_dto import AfterProcessDto
+
 
 class IncruitPreprocessor:
-    def batch_process(self, posts: List[Post]):
+    def __init__(self):
+        self.result: List[AfterProcessDto] = []
+
+    def batch_process(self, posts: List[BeforeProcessDto]):
         for post in posts:
             self.education(post)
+        self.result = []
 
-    def education(self, post: Post):
+    def education(self, post: BeforeProcessDto):
         post.education = post.education.replace('이상', '').strip()  # 대졸 이상 -> 대졸
         post.education = post.education.replace('↑', '').strip()  # 대졸↑ -> 대졸
         # if (post.education[:2] == '석사') or (post.education[:2] == '박사'):
@@ -24,7 +30,7 @@ class IncruitPreprocessor:
         # if '고졸' in post.education:
         #     post.education = '고등학교졸업'
 
-    def deadline(self, post: Post):
+    def deadline(self, post: BeforeProcessDto):
         if post.deadline in ('상시', '채용시'):
             # 상시 또는 채용시 공고
             post.deadline = None
@@ -36,7 +42,7 @@ class IncruitPreprocessor:
             formatted_date = datetime.strptime(date, '%Y-%m-%d')
             post.deadline = formatted_date.date().strftime("%Y-%m-%d")
 
-    def created_at(self, post: Post):
+    def created_at(self, post: BeforeProcessDto):
         create_date = datetime.now().date()
         if '시간' in post.created_at:
             # n시간 전 공고
@@ -51,9 +57,8 @@ class IncruitPreprocessor:
             print(type(create_date))
             post.created_at = create_date - timedelta(days=int(posted_date[0]))
 
-    def career(self, post: Post):
-        post.career = post.career.replace('이상', '')
-        post.career = post.career.replace('↑', '')
-        careers = post.career.split('/')
-        for career in careers:
-            post.career = career
+    def career(self, post: BeforeProcessDto):
+        if post.career[:2] == '신입':
+            post.career = '신입'
+        else:
+            post.career = '경력'

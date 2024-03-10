@@ -1,28 +1,13 @@
-class Post:
-    def __init__(self):
-        """
-        공고글ID id BIGINT
-        회사이름 company_name varchar(20)
-        (회사ID company_id BIGINT)
-        (직무 job_id BIGINT)
-        공고명 post_name VARCHAR(255)
-        경력 career VARCHAR(20)
-        교육 education VARCHAR(20)
-        지역 location VARCHAR(20)
-        채용형태 work_type VARCHAR(20)
-        마감일 deadline DATE
-        글URL url VARCHAR(255)
-        생성날짜 created_at DATETIME
-        """
-        self.__company_name = None
-        self.__post_name = None
-        self.__career = None
-        self.__education = None
-        self.__location = None
-        self.__work_type = None
-        self.__deadline = None
-        self.__url = None
-        self.__created_at = None
+class BeforeProcessDto:
+    __company_name: str
+    __post_name: str
+    __career: str  # 신입/경력
+    __education: str
+    __location: str
+    __work_type: str
+    __deadline: str  # ~03/21(목)
+    __url: str
+    __created_at: str
 
     @property
     def company_name(self):

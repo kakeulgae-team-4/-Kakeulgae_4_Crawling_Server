@@ -1,7 +1,8 @@
 from bs4 import BeautifulSoup
+
+from saramin.saramin_web_driver import SaraminWebDriver
 from strategy.collector import Collector
-from web_driver import WebDriver
-from dto.post.post_builder import PostBuilder
+from dto.post.before_dto_builder import PostBuilder
 from collections import defaultdict
 from strategy.saramin.saramin_config import parameter_config as configs
 from logger.stream_logger import StreamLogger
@@ -17,7 +18,7 @@ class SaraminCollector(Collector):
         self.base_url = None #크롤링할 웹사이트의 기본 URL
         self.url = None #실제 크롤링에 사용될 전체 URL
         self.params = defaultdict(str) # URL의 쿼리 파라미터를 저장
-        self.webdriver = WebDriver() #웹 페이지에 액세스하고 DOM을 조작하기 위한 WebDriver 인스턴스
+        self.webdriver = SaraminWebDriver() #웹 페이지에 액세스하고 DOM을 조작하기 위한 WebDriver 인스턴스
         self.source_page = None #WebDriver를 통해 가져온 현재 페이지의 소스 코드를 저장
         self.init_params() #URL설정부분
 
@@ -30,20 +31,14 @@ class SaraminCollector(Collector):
     def make_query_parameter(self):
         param_list = [f"{key}={value}" for key, value in self.params.items()]
         self.url = f"{self.base_url}?{'&'.join(param_list)}"
-
-    def next_page_exists(self):
-        soup = BeautifulSoup(self.source_page, 'html.parser')
-        next_button = soup.find('a', {'class': 'BtnNext'})
-        if next_button:
-            return True
-        return False
+        print(self.url)
 
     def find_posts(self, **kwargs):
-        while self.next_page_exists():
+        while True:
             self.set_source_page()
             self.find_one_page()
-            # for post in self.posts:
-            #     ParamPrinter.log_class_param(log, post, self.params['page'])
+            for post in self.posts:
+                ParamPrinter.log_class_param(log, post, self.params['page'])
             self.posts = []
             self.find_next_page()
 
@@ -90,3 +85,7 @@ class SaraminCollector(Collector):
         # WebDriver를 사용해 현재 설정된 URL의 페이지를 로드하고 HTML 소스를 가져옴
         self.webdriver.open_url(self.url)
         self.source_page = self.webdriver.get_page_source()
+
+if __name__ == '__main__':
+    tmp = SaraminCollector()
+    tmp.find_posts()
