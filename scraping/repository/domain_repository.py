@@ -1,12 +1,10 @@
+import import_django
 from typing import Any
-
-from models import Career, WorkType, Education, Job, JobPostingCareer, JobPostingWorkType, RegionPostingRelation, \
-    Region2nd
+from posting_service.models import *
 from repository import Repository
 
 
 class CareerRepository(Repository):
-
     def save(self, item: Any):
         pass
 
@@ -55,10 +53,6 @@ class JobPostingWorkTypeRepository(Repository):
 
     def find_one(self, id: int) -> JobPostingWorkType:
         return JobPostingWorkType.objects.filter(id=id).first()
-
-
-from repository import Repository
-from posting.models import JobPosting
 
 
 class PostRepository(Repository):
