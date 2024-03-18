@@ -1,4 +1,6 @@
-from local_db import *
+import import_django
+from scraping.repository.domain_repository import *
+from posting_service.models import *
 
 
 class PostService:
