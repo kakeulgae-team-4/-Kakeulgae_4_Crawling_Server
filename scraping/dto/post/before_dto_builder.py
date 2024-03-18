@@ -2,7 +2,7 @@ from dto.post.before_process_dto import BeforeProcessDto
 from copy import deepcopy
 
 
-class PostBuilder:
+class BeforeDtoBuilder:
     def __init__(self):
         self.__post = BeforeProcessDto()
 
@@ -33,6 +33,10 @@ class PostBuilder:
     def deadline(self, deadline):
         self.__post.deadline = deadline
         return self
+
+    def job_detail(self, job_detail):
+        self.__post.job_detail = job_detail
+        return job_detail
 
     def url(self, url):
         self.__post.url = url

@@ -5,6 +5,7 @@ class BeforeProcessDto:
     __education: str
     __location: str
     __work_type: str
+    __job_detail: List[str]
     __deadline: str  # ~03/21(목)
     __url: str
     __created_at: str
@@ -56,6 +57,14 @@ class BeforeProcessDto:
     @work_type.setter
     def work_type(self, work_type):
         self.__work_type = work_type
+
+    @property
+    def job_detail(self):
+        return self.__job_detail
+
+    @job_detail.setter
+    def job_detail(self, job_detail):
+        self.__job_detail = job_detail
 
     @property
     def deadline(self):

@@ -3,7 +3,7 @@ from copy import deepcopy
 from post.after_process_dto import AfterProcessDto
 
 
-class PostBuilder:
+class AfterDtoBuilder:
     def __init__(self):
         self.__post = AfterProcessDto()
 
@@ -33,6 +33,10 @@ class PostBuilder:
 
     def work_type(self, work_type):
         self.__post.work_type = work_type
+        return self
+
+    def job_detail(self, job_detail):
+        self.__post.job_detail = job_detail
         return self
 
     def deadline(self, deadline):
