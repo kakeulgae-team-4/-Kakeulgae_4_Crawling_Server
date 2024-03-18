@@ -1,6 +1,42 @@
 from django.db import models
 
 
+class IncruitEducationMapping(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    ic_edu = models.TextField()
+    si_edu = models.TextField()
+
+    class Meta:
+        db_table = 'incruit_education_mapping'
+
+
+class IncruitJobDetailMapping(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    ic_job_detail = models.TextField()
+    si_job_detail = models.TextField()
+
+    class Meta:
+        db_table = 'incruit_job_detail_mapping'
+
+
+class IncruitRegionMapping(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    ic_region = models.TextField()
+    si_region = models.TextField()
+
+    class Meta:
+        db_table = 'incruit_region_mapping'
+
+
+class IncruitWorkTypeMapping(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    ic_work_type = models.TextField()
+    si_work_type = models.TextField()
+
+    class Meta:
+        db_table = 'incruit_work_type_mapping'
+
+
 class JobKoreaRegionMapping(models.Model):
     id = models.BigAutoField(primary_key=True)
     jk_region = models.TextField()
@@ -8,6 +44,7 @@ class JobKoreaRegionMapping(models.Model):
 
     class Meta:
         db_table = 'jobkorea_region_mapping'
+
 
 class JobkoreaEduMapping(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -27,6 +64,7 @@ class JobkoreaJobMapping(models.Model):
     class Meta:
         # managed = False
         db_table = 'jobkorea_job_mapping'
+
 
 class IncruitJobMapping(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -153,7 +191,8 @@ class Region2nd(models.Model):
 class RegionPostingRelation(models.Model):
     id = models.BigAutoField(primary_key=True)
     job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name='region_posting_relations', null=True)
-    region_2nd = models.ForeignKey(Region2nd, on_delete=models.CASCADE, related_name='region_posting_relations', null=True)
+    region_2nd = models.ForeignKey(Region2nd, on_delete=models.CASCADE, related_name='region_posting_relations',
+                                   null=True)
 
     class Meta:
         # managed = False
