@@ -1,14 +1,17 @@
+from typing import List
+
+
 class BeforeProcessDto:
-    __company_name: str
-    __post_name: str
-    __career: str  # 신입/경력
-    __education: str
-    __location: str
-    __work_type: str
-    __job_detail: List[str]
-    __deadline: str  # ~03/21(목)
-    __url: str
-    __created_at: str
+    __company_name: str = None
+    __post_name: str = None
+    __career: str = None
+    __education: str = None
+    __location: str = None
+    __work_type: str = None
+    __job_detail: List[str] = None
+    __deadline: str = None
+    __url: str = None
+    __created_at: str = None
 
     @property
     def company_name(self):
@@ -63,7 +66,7 @@ class BeforeProcessDto:
         return self.__job_detail
 
     @job_detail.setter
-    def job_detail(self, job_detail):
+    def job_detail(self, job_detail: List[str]):
         self.__job_detail = job_detail
 
     @property
@@ -89,3 +92,10 @@ class BeforeProcessDto:
     @created_at.setter
     def created_at(self, created_at):
         self.__created_at = created_at
+
+    def __repr__(self):
+        return (f'company_name: {self.company_name}, post_name: {self.post_name},'
+                f' career: {self.career}, education: {self.education},'
+                f' location: {self.location}, work_type: {self.work_type},'
+                f' job_detail: {self.job_detail}, deadline: {self.deadline}, url: {self.url},'
+                f' created_at: {self.created_at}')

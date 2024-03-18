@@ -3,17 +3,17 @@ from datetime import datetime
 
 
 class AfterProcessDto:
-    __company_name: str
-    __post_name: str
-    __career: List[str]  # ['신입', '경력']
-    __education: str
-    __region_1st: str
-    __region_2nd: str
-    __work_type: str
-    __job_detail: List[str]
-    __deadline: Optional[datetime]  # 2024-03-21
-    __url: str
-    __created_at: datetime  # 어제 -> 2024-03-10
+    __company_name: str = None
+    __post_name: str = None
+    __career: List[str] = None
+    __education: str = None
+    __region_1st: str = None
+    __region_2nd: str = None
+    __work_type: str = None
+    __job_detail: List[str] = None
+    __deadline: Optional[datetime] = None
+    __url: str = None
+    __created_at: datetime = None
 
     @property
     def company_name(self):
@@ -72,6 +72,14 @@ class AfterProcessDto:
         self.__work_type = work_type
 
     @property
+    def job_detail(self):
+        return self.__job_detail
+
+    @job_detail.setter
+    def job_detail(self, job_detail):
+        self.__job_detail = job_detail
+
+    @property
     def deadline(self):
         return self.__deadline
 
@@ -94,3 +102,11 @@ class AfterProcessDto:
     @created_at.setter
     def created_at(self, created_at):
         self.__created_at = created_at
+
+    def __repr__(self):
+        return (f'company_name: {self.company_name}, post_name: {self.post_name},'
+                f' career: {self.career}, education: {self.education},'
+                f' region_1st: {self.region_1st}, region_2nd: {self.region_2nd},'
+                f' work_type: {self.work_type}, job_detail: {self.job_detail},'
+                f' deadline: {self.deadline}, url: {self.url},'
+                f' created_at: {self.created_at}')

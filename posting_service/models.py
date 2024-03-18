@@ -198,7 +198,7 @@ class Region2nd(models.Model):
 
 class RegionPostingRelation(models.Model):
     id = models.BigAutoField(primary_key=True)
-    job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name='region_posting_relations', null=True)
+    job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='region_posting_relations', null=True)
     region_2nd = models.ForeignKey(Region2nd, on_delete=models.CASCADE, related_name='region_posting_relations',
                                    null=True)
 
