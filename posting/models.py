@@ -99,7 +99,6 @@ class JobPosting(models.Model):
     company_name = models.CharField(max_length=90, null=False, blank=False)
     post_name = models.CharField(max_length=255, null=False, blank=False)
 
-    job = models.ForeignKey(Job, on_delete=models.SET_NULL, null=True)
     education = models.ForeignKey(Education, on_delete=models.SET_NULL, null=True)
 
     url = models.CharField(max_length=255, null=False, blank=False)
@@ -167,6 +166,15 @@ class JobDetail(models.Model):
     class Meta:
         # managed = False
         db_table = 'job_detail'
+
+
+class JobDetailPostingRelation(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE, related_name='job_detail_relation')
+    job_detail = models.ForeignKey(JobDetail, on_delete=models.CASCADE, related_name='job_detail_relation')
+
+    class Meta:
+        db_table = 'job_detail_posting_relation'
 
 
 class Region1st(models.Model):
