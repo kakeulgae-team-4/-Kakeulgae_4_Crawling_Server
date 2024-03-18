@@ -13,7 +13,7 @@ class IncruitEducationMapping(models.Model):
 class IncruitJobDetailMapping(models.Model):
     id = models.BigAutoField(primary_key=True)
     ic_job_detail = models.TextField()
-    si_job_detail = models.TextField()
+    si_job_detail = models.TextField(null=True)
 
     class Meta:
         db_table = 'incruit_job_detail_mapping'
