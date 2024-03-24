@@ -29,14 +29,18 @@ class IncruitPreprocessor:
         self.education(post.education)
         self.deadline(post.deadline)
         self.region(post.location)
+        self.work_type(post.work_type)
         self.job_detail(post.job_detail)
         self.created_at(post.created_at)
         return self.builder.build()
 
     def region(self, region: str):
-        region_info = region.split()[1]
-        region_2nd = IncruitRegionMapping.objects.filter(ic_region=region_info).first().si_region
-        self.builder.region_2nd(region_2nd)
+        region_info = region.split()
+        region_1st, region_2nd = region_info[0], region_info[1]
+        region_2nd = IncruitRegionMapping.objects.filter(ic_region=region_2nd).first().si_region
+        (self.builder
+         .region_1st(region_1st)
+         .region_2nd(region_2nd))
 
     def education(self, education: str):
         education = education.replace('이상', '').strip()  # 대졸 이상 -> 대졸
@@ -88,6 +92,9 @@ class IncruitPreprocessor:
             res.append(job_detail_mapper.filter(ic_job_detail=job_detail).first().si_job_detail)
         self.builder.job_detail(res)
 
+    def work_type(self, work_type: str):
+        self.builder.work_type(work_type)
+
 
 if __name__ == '__main__':
     from scraping.dto.post.before_dto_builder import BeforeDtoBuilder
@@ -123,4 +130,3 @@ if __name__ == '__main__':
     after_post = preprocessor.process(before_post)
     print('#### after pose dto ####')
     print(after_post)
-
