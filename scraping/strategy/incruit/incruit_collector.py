@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 from strategy.collector import Collector
 from web_driver import WebDriver
-from dto.post.before_dto_builder import PostBuilder
+from scraping.dto.post.before_dto_builder import BeforeDtoBuilder
 from collections import defaultdict
 from strategy.incruit.incruit_config import parameter_config as config
 from strategy.incruit.incruit_preprocessor import IncruitPreprocessor
@@ -17,7 +17,8 @@ class IncruitCollector(Collector):
         self.preprocessor = IncruitPreprocessor()
         self.source_page = None  # source page는 변경됨
         self.init_params()
-        self.builder = PostBuilder()
+        print(self.url)
+        self.builder = BeforeDtoBuilder()
 
     def init_params(self):
         self.base_url = config['base_url']
@@ -97,3 +98,8 @@ class IncruitCollector(Collector):
     def set_source_page(self):
         self.webdriver.open_url(self.url)
         self.source_page = self.webdriver.get_page_source()
+
+
+if __name__ == '__main__':
+    test_collector = IncruitCollector()
+    test_collector.find_posts()

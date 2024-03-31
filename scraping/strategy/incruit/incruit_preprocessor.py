@@ -2,9 +2,9 @@ import import_django
 from posting_service.models import IncruitEducationMapping, IncruitRegionMapping, IncruitJobDetailMapping, \
     IncruitWorkTypeMapping
 from typing import List
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import re
-
+from scraping.service.post_service import PostService
 from dto.post.before_process_dto import BeforeProcessDto
 from post.after_dto_builder import AfterDtoBuilder
 from post.after_process_dto import AfterProcessDto
@@ -14,11 +14,11 @@ class IncruitPreprocessor:
     def __init__(self):
         self.result: List[AfterProcessDto] = []
         self.builder = AfterDtoBuilder()
+        self.service = PostService()
 
     def batch_process(self, posts: List[BeforeProcessDto]):
         for post in posts:
             self.process(post)
-        self.result = []
 
     def process(self, post: BeforeProcessDto):
         (self.builder
@@ -32,32 +32,52 @@ class IncruitPreprocessor:
         self.work_type(post.work_type)
         self.job_detail(post.job_detail)
         self.created_at(post.created_at)
-        return self.builder.build()
+        self.service.save_post(self.builder.build())
 
     def region(self, region: str):
         region_info = region.split()
-        region_1st, region_2nd = region_info[0], region_info[1]
-        region_2nd = IncruitRegionMapping.objects.filter(ic_region=region_2nd).first().si_region
-        (self.builder
-         .region_1st(region_1st)
-         .region_2nd(region_2nd))
+        if len(region_info) >= 2:
+            region_1st, region_2nd = region_info[0], region_info[1]
+        else:
+            region_1st, region_2nd = region_info[0], None
+        print(region_info)
+        find_region_2nd = None
+
+        if region_2nd == '외':
+            region_2nd = None
+        else:
+            find_region_2nd = IncruitRegionMapping.objects.filter(ic_region=region_2nd).first()
+
+        if find_region_2nd is not None:
+            (self.builder
+             .region_1st(region_1st)
+             .region_2nd(find_region_2nd.si_region))
+        else:
+            (self.builder
+             .region_1st(region_1st)
+             .region_2nd(region_2nd))
 
     def education(self, education: str):
         education = education.replace('이상', '').strip()  # 대졸 이상 -> 대졸
         education = education.replace('↑', '').strip()  # 대졸↑ -> 대졸
-        education = IncruitEducationMapping.objects.filter(ic_edu=education).first().si_edu
-        self.builder.education(education)
+        find_education = IncruitEducationMapping.objects.filter(ic_edu=education).first()
+        if find_education is not None:
+            self.builder.education(find_education.si_edu)
+        else:
+            self.builder.education(education)
 
     def deadline(self, deadline: str):
         if deadline in ('상시', '채용시'):
             # 상시 또는 채용시 공고
             deadline = None
+        elif deadline.endswith("시 마감"):
+            deadline = date.today()
         elif deadline.startswith('~'):
             # ~02.04
             deadline = deadline[1:6].replace('.', '-')
             current_year = datetime.now().year
-            date = f'{current_year}-{deadline}'
-            formatted_date = datetime.strptime(date, '%Y-%m-%d')
+            cur_date = f'{current_year}-{deadline}'
+            formatted_date = datetime.strptime(cur_date, '%Y-%m-%d')
             deadline = formatted_date.date().strftime("%Y-%m-%d")
         self.builder.deadline(deadline)
 
@@ -89,7 +109,11 @@ class IncruitPreprocessor:
         job_detail_mapper = IncruitJobDetailMapping.objects.all()
         res = []
         for job_detail in job_details:
-            res.append(job_detail_mapper.filter(ic_job_detail=job_detail).first().si_job_detail)
+            find_job_detail = job_detail_mapper.filter(ic_job_detail=job_detail).first()
+            if find_job_detail is not None:
+                res.append(find_job_detail.si_job_detail)
+            else:
+                res.append(job_detail)
         self.builder.job_detail(res)
 
     def work_type(self, work_type: str):
@@ -128,5 +152,6 @@ if __name__ == '__main__':
 
     preprocessor = IncruitPreprocessor()
     after_post = preprocessor.process(before_post)
+    print()
     print('#### after pose dto ####')
     print(after_post)
